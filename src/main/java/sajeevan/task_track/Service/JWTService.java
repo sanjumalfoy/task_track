@@ -35,16 +35,15 @@ public class JWTService {
 
     // Token Rules here we are including the user name, creeation time and expiry
     // time of the token
-    public String generateToken(String userName) {
+    public String generateToken(String userName, Long id) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("userId", id);
 
         return Jwts.builder()
-                .claims()
-                .add(claims)
+                .claims(claims)
                 .subject(userName)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 10 * 60 * 60 * 15))
-                .and()
+                .expiration(new Date(System.currentTimeMillis() + 15 * 60 * 60 * 1000L))
                 .signWith(getKey())
                 .compact();
     }
@@ -56,6 +55,13 @@ public class JWTService {
 
     public String extractUserName(String token) {
         return extractClaim(token, Claims::getSubject);
+    }
+
+    public Long extractUserId(String token) {
+        return extractClaim(token, claims -> {
+            Number idValue = claims.get("userId", Number.class);
+            return idValue == null ? null : idValue.longValue();
+        });
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimResolver) {

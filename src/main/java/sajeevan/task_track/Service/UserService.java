@@ -66,7 +66,7 @@ public class UserService {
             return "Invalid password";
         }
 
-        return jwtService.generateToken(existing.getUsername());
+        return jwtService.generateToken(existing.getUsername(),existing.getId());
     }
 
 }
