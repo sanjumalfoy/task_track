@@ -2,8 +2,6 @@ package sajeevan.task_track.Entity;
 
 import java.time.LocalDateTime;
 
-import org.springframework.stereotype.Indexed;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
