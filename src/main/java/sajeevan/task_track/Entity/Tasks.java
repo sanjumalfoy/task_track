@@ -2,6 +2,8 @@ package sajeevan.task_track.Entity;
 
 import java.time.LocalDateTime;
 
+import org.springframework.stereotype.Indexed;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
@@ -16,29 +18,35 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
-import sajeevan.task_track.enums.ProjectStatus;
+import sajeevan.task_track.enums.Severity;
+import sajeevan.task_track.enums.TaskStatus;
 
 @Entity
-@Table(name = "projects")
+@Table(name="tasks")
 @Data
-public class Projects {
+public class Tasks {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String title;
 
     private String description;
 
     @Enumerated(EnumType.STRING)
-    private ProjectStatus status=ProjectStatus.SCHEDULED;
+    private TaskStatus status=TaskStatus.TODO;
 
+    @Enumerated(EnumType.STRING)
+    private Severity severity=Severity.LOW;
+    
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "project_id", nullable = false)
     @JsonIgnore
-    private User owner;
+    private Projects project;
 
-    private LocalDateTime createdAt=LocalDateTime.now();
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt = LocalDateTime.now();
+
 }
